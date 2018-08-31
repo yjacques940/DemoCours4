@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour {
 
     protected const float minMoveDistance = 0.001f;
     protected const float shellRadius = 0.01f;
+    private bool fireIsPressed = false;
 
     private void Awake() {
         contactFilter.useTriggers = false;
@@ -32,6 +33,7 @@ public class PlayerMovement : MonoBehaviour {
     }
     void Update() {
         ComputeVelocity();
+        ManageInteraction();
     }
     protected  void ComputeVelocity() {
         Vector2 move = Vector2.zero;
@@ -56,5 +58,40 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
         rigidBody2D.position = rigidBody2D.position + move.normalized * distance;
-    }  
+    }
+
+    private void ManageInteraction()
+    {
+        if (Input.GetAxis("Jump") != 0)
+        {
+            if (!fireIsPressed)
+            {
+                print("fire");
+                fireIsPressed = true;
+                ContactFilter2D contactFilter2DInteraction = new ContactFilter2D();
+                contactFilter2DInteraction.useTriggers = false;
+
+                contactFilter2DInteraction.SetLayerMask(Physics2D.GetLayerCollisionMask(LayerMask.NameToLayer("Interaction")));
+                contactFilter2DInteraction.useLayerMask = true;
+                RaycastHit2D[] interactionHit = new RaycastHit2D[16];
+                List<RaycastHit2D> hitBufferListInteraction = new List<RaycastHit2D>(16);
+                hitBufferListInteraction.Clear();
+                int countInteraction = Physics2D.Raycast(gameObject.transform.position, Vector2.up, contactFilter2DInteraction, interactionHit);
+                print(countInteraction);
+                for (int i = 0; i < countInteraction; i++)
+                {
+                    hitBufferListInteraction.Add(interactionHit[i]);
+                }
+                if (hitBufferListInteraction.Count > 0)
+                {
+                    hitBufferListInteraction[0].transform.gameObject.GetComponent<Interaction>().Interact();
+                }
+            }
+        }
+        else
+            {
+                fireIsPressed = false;
+            }
+        
+    }
 }

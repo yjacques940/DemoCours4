@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Door : MonoBehaviour {
     [SerializeField] string sceneName;
+    [SerializeField] AudioClip stairsSound;
+
+    AudioSource audioSource;
 	// Use this for initialization
 	void Start () {
-		
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -16,7 +19,8 @@ public class Door : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ChangeLevel();
+        audioSource.PlayOneShot(stairsSound);
+        Invoke("ChangeLevel",1.0f);
     }
 
     private void ChangeLevel()

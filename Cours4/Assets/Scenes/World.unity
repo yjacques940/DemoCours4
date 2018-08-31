@@ -229,6 +229,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114424521635452886, guid: 9d8222c6b5ac3b8459bb96e1457b55be,
+        type: 2}
+      propertyPath: sceneName
+      value: WorldIntroCave
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d8222c6b5ac3b8459bb96e1457b55be, type: 2}
   m_IsPrefabAsset: 0
